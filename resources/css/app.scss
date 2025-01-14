@@ -1,1 +1,55 @@
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+#file-manager {
+    .controls {
+        gap: 10px;
+    }
+
+    .controls .control i.bi::before {
+        font-size: 20px;
+        font-weight: 700 !important;
+        line-height: unset;
+    }
+
+    #file-list {
+         table {
+            width: 100%;
+
+             tbody {
+                 height: 500px;
+                 overflow-y: auto;
+                 display: block;
+             }
+        }
+
+        table thead, table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+         table thead {
+            width: calc( 100% - 1em )
+        }
+
+        .file-row {
+            .file-name {
+                cursor: pointer;
+            }
+
+            .file-name .file-icon {
+                margin-inline-end: 10px;
+                font-size: 20px;
+            }
+
+            .file-name .file-icon.file-type-directory {
+                color: darkorange;
+            }
+
+            .file-name .file-icon.file-type-file {
+                color: #3a066d;
+            }
+        }
+    }
+}
