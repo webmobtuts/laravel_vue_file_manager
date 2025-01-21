@@ -1,57 +1,30 @@
 <script setup>
-    import {ref} from "vue";
     import FileRow from "./file-row.vue";
 
-    const file_list = ref([
-        {
-            name: '..',
-            type: 'directory',
-            size: '',
-            modified_date: '',
-            mime_type: '',
-            permission: ''
+    const props = defineProps({
+        file_list: {
+            type: Array
         },
-        {
-            name: 'Directory',
-            type: 'directory',
-            size: '4 KB',
-            modified_date: 'Yesterday, 1:06 PM',
-            mime_type: 'httpd/unix-directory',
-            permission: '0755'
-        },
-        {
-            name: 'Directory',
-            type: 'directory',
-            size: '4 KB',
-            modified_date: 'Yesterday, 1:06 PM',
-            mime_type: 'httpd/unix-directory',
-            permission: '0755'
-        },
-        {
-            name: 'File',
-            type: 'file-php',
-            size: '30 KB',
-            modified_date: 'Yesterday, 1:06 PM',
-            mime_type: 'text/x-generic',
-            permission: '0644'
-        },
-        {
-            name: 'File',
-            type: 'file-js',
-            size: '30 KB',
-            modified_date: 'Yesterday, 1:06 PM',
-            mime_type: 'text/x-generic',
-            permission: '0644'
-        },
-        {
-            name: 'File',
-            type: 'file-generic',
-            size: '30 KB',
-            modified_date: 'Yesterday, 1:06 PM',
-            mime_type: 'text/x-generic',
-            permission: '0644'
+        selected_files: {
+            type: Array
         }
-    ]);
+    });
+
+    const emits = defineEmits(['selectFileSingle', 'selectFileRange', 'selectMultipleFiles', 'onDblClickFile']);
+
+    const is_selected = (index) => {
+       return (props.selected_files.length && (props.selected_files.find((f) => f.index === index) !== undefined))===true;
+    };
+
+    const handleSelectFile = (event, index, file_item) => {
+        if(event.ctrlKey) {           // Triggered if clicked while holding ctrl key
+            emits('selectMultipleFiles', {index, file_item})
+        } else if(event.shiftKey) {   // Triggered if clicked while holding shift key
+            emits('selectFileRange', {index, file_item})
+        } else {                      // Triggered if clicked only
+            emits('selectFileSingle', {index, file_item})
+        }
+    }
 </script>
 
 <template>
@@ -68,7 +41,12 @@
             </thead>
             <tbody class="table-group-divider">
 
-                <FileRow v-for="(file_item, index) in file_list" :key="index" :fileItem="file_item" />
+                <FileRow v-for="(file_item, index) in file_list"
+                         :key="index"
+                         :fileItem="file_item"
+                         @click.prevent="handleSelectFile($event, index,  file_item)"
+                         @dblclick="$emit('onDblClickFile', file_item)"
+                         :is_selected="is_selected(index)" />
 
             </tbody>
         </table>

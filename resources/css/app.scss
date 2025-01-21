@@ -52,4 +52,19 @@
             }
         }
     }
+
+    .bg-primary td {
+        --bs-bg-opacity: 1;
+        background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+        color: #fff;
+
+        .file-icon.file-type-file {
+            color: #fff !important;
+        }
+    }
+}
+
+.disabled {
+    cursor: not-allowed;
+    color: gray;
 }
