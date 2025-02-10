@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import {computed, provide, ref} from "vue";
+import {computed, onMounted, provide, ref} from "vue";
 import FileActions from "./components/file-actions.vue";
 import DirectoryNavigation from "./components/directory-navigation.vue";
 import FileList from "./components/file-list.vue";
@@ -135,5 +135,11 @@ provide('app_global', computed(() => ({
     navigation_dir: navigation_dir.value
     })
 ));
+
+onMounted(() => {
+    addEventListener("contextmenu", (event) => {
+        console.log(event);
+    });
+});
 
 </script>
